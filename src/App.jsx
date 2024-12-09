@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { Switch, FormControlLabel } from '@mui/material'
 import { vigesiseptimal, alfabeangel } from './numeros'
+import WordInterpreter from './wordInterpreter'
 
 function getMatrix(n, op) {
     return [...Array(n).keys()].map((_, i) =>
@@ -10,6 +11,7 @@ function getMatrix(n, op) {
         )
     )
 }
+
 /**
  *
  * @param {number} n decimal number value
@@ -36,7 +38,7 @@ function changeBase(n, base, angel) {
     return final.join('')
 }
 
-function App() {
+export default function App() {
     const [base, setBase] = useState(10)
     const [op, setOp] = useState('×')
     const [angel, setAngel] = useState(false)
@@ -46,12 +48,13 @@ function App() {
 
     return (
         <>
-            {/* <h1>Sistema numeroángelical</h1>
-            <p>
+            {/* <h1>Sistema numeroángelical</h1> */}
+
+            <WordInterpreter />
+            {/* <p>
                 Tablas de multiplicar para sistema numéricos
                 de diferente base
             </p> */}
-
             <br />
 
             <FormControlLabel
@@ -59,7 +62,6 @@ function App() {
                 label='numeroángelical'
                 onChange={() => setAngel(!angel)}
             />
-
             <FormControlLabel
                 control={<Switch defaultChecked />}
                 label={op}
@@ -71,13 +73,10 @@ function App() {
                     setMatrix(getMatrix(base, new_op))
                 }}
             />
-
             <br />
-
             <label htmlFor='tablas'>
                 Base del sistema (2-27):
             </label>
-
             <input
                 type='number'
                 id='tablas'
@@ -85,14 +84,13 @@ function App() {
                 min='2'
                 max='27'
                 value={base}
-                onChange={(e) => {
-                    const v = +e.target.value
+                onChange={(ev) => {
+                    const v = +ev.target.value
                     const lv = v > 27 ? 27 : v < 2 ? 2 : v
                     setBase(lv)
                     setMatrix(getMatrix(lv, op))
                 }}
             />
-
             <table>
                 <tbody>
                     {matrix
@@ -126,5 +124,3 @@ function App() {
         </>
     )
 }
-
-export default App
