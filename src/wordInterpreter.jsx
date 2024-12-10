@@ -18,6 +18,7 @@ function wordToNumber(word) {
     const w = word.split('').reverse()
 
     if (!w.length) return null
+    if (isNaN(angelHash[w[0].toUpperCase()])) return w
 
     let sum = 0
     for (let i = 0; i < w.length; i++) {
@@ -35,7 +36,14 @@ export default function WordInterpreter() {
         const lines = inputValue.split('\n')
 
         const numericWords = lines.map((line) =>
-            line.split(' ').map(wordToNumber).join(' ')
+            line
+                .replace(
+                    /[^a-zA-ZáÁéÉíÍóÓuÚüÜ]+/g,
+                    (match) => ' ' + match
+                )
+                .split(' ')
+                .map(wordToNumber)
+                .join(' ')
         )
         setResult(numericWords)
     }
