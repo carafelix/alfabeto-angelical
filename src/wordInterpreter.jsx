@@ -44,10 +44,10 @@ export default function WordInterpreter() {
                 .split(' ')
                 .map(wordToNumber)
                 .join(' ')
-                .replaceAll(/ [^0-9]/g, (match) =>
+                .replaceAll(/ [^0-9]+/g, (match) =>
                     match.replace(' ', '')
                 )
-                .replaceAll(/ [^0-9]/g, (match) =>
+                .replaceAll(/[^0-9] /g, (match) =>
                     match.replace(' ', '')
                 )
         )
