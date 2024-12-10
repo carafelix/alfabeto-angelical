@@ -3,12 +3,12 @@ import { Textarea, Button } from '@mui/joy'
 import { useState } from 'react'
 
 const angelHash = alfabeangel.reduce(
-    (acc, v, i) => ({ ...acc, [v]: i + 1 }),
+    (acc, v, i) => ({ ...acc, [v]: i }),
     {}
 )
 
 /**
- *  Interprets the word using a letter to number conversion A=1, B=2, ..., Z = 27
+ *  Interprets the word using a letter to number conversion ∅=0, A=1, B=2, ..., Z = 27
  *  And then performs trivial numerical interpretation based on radix and base
  * @param {*} word to be converted into a decimal number
  * @returns
@@ -21,7 +21,7 @@ function wordToNumber(word) {
 
     let sum = 0
     for (let i = 0; i < w.length; i++) {
-        sum += angelHash[w[i].toUpperCase()] * 27 ** i
+        sum += angelHash[w[i].toUpperCase()] * 28 ** i
     }
     return sum
 }

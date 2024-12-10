@@ -6,11 +6,12 @@ export const alfabeangel = [...Array(14).keys()]
             String.fromCharCode(v + 79)
         )
     )
+alfabeangel.unshift('∅')
 
 export const vigesiseptimal = [...Array(10).keys()]
     .map((v) => `${v}`)
     .concat(
-        [...Array(17).keys()].map((v) =>
+        [...Array(18).keys()].map((v) =>
             String.fromCharCode(v + 65)
         )
     )

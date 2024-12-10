@@ -75,18 +75,18 @@ export default function App() {
             />
             <br />
             <label htmlFor='tablas'>
-                Base del sistema (2-27):
+                Base del sistema (2-28):
             </label>
             <input
                 type='number'
                 id='tablas'
                 name='tablas'
                 min='2'
-                max='27'
+                max='28'
                 value={base}
                 onChange={(ev) => {
                     const v = +ev.target.value
-                    const lv = v > 27 ? 27 : v < 2 ? 2 : v
+                    const lv = v > 28 ? 28 : v < 2 ? 2 : v
                     setBase(lv)
                     setMatrix(getMatrix(lv, op))
                 }}
