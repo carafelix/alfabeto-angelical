@@ -18,7 +18,7 @@ function wordToNumber(word) {
     const w = word.split('').reverse()
 
     if (!w.length) return null
-    if (isNaN(angelHash[w[0].toUpperCase()])) return w
+    if (isNaN(angelHash[w[0].toUpperCase()])) return word
 
     let sum = 0
     for (let i = 0; i < w.length; i++) {
@@ -37,13 +37,19 @@ export default function WordInterpreter() {
 
         const numericWords = lines.map((line) =>
             line
-                .replace(
-                    /[^a-zA-ZáÁéÉíÍóÓuÚüÜ]+/g,
-                    (match) => ' ' + match
+                .replaceAll(
+                    /[^a-zA-ZáÁéÉíÍóÓúÚüÜ]/g,
+                    (match) => ` ` + match + ' '
                 )
                 .split(' ')
                 .map(wordToNumber)
                 .join(' ')
+                .replaceAll(/ [^0-9]/g, (match) =>
+                    match.replace(' ', '')
+                )
+                .replaceAll(/ [^0-9]/g, (match) =>
+                    match.replace(' ', '')
+                )
         )
         setResult(numericWords)
     }
