@@ -38,7 +38,7 @@ export default function WordInterpreter() {
         const numericWords = lines.map((line) =>
             line
                 .replaceAll(
-                    /[^a-zA-ZáÁéÉíÍóÓúÚüÜ]/g,
+                    /[^a-zA-ZáÁéÉíÍóÓúÚüÜñ]/g,
                     (match) => ` ` + match + ' '
                 )
                 .split(' ')
