@@ -1,17 +1,44 @@
-export const alfabeangel = [...Array(14).keys()]
-    .map((v) => String.fromCharCode(v + 65))
-    .concat(['Ñ'])
-    .concat(
-        [...Array(12).keys()].map((v) =>
-            String.fromCharCode(v + 79)
-        )
-    )
-alfabeangel.unshift('∅')
+export const alfabeangel = [
+    '∅',
+    'A',
+    'Á',
+    'B',
+    'C',
+    'D',
+    'E',
+    'É',
+    'F',
+    'G',
+    'H',
+    'I',
+    'Í',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'Ñ',
+    'O',
+    'Ó',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'Ú',
+    'Ü',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+]
 
 export const vigesiseptimal = [...Array(10).keys()]
     .map((v) => `${v}`)
     .concat(
-        [...Array(18).keys()].map((v) =>
+        [...Array(100).keys()].map((v) =>
             String.fromCharCode(v + 65)
         )
     )

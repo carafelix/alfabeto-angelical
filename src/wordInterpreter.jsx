@@ -21,7 +21,7 @@ function wordToNumber(word) {
 
     let sum = 0
     for (let i = 0; i < w.length; i++) {
-        sum += angelHash[w[i].toUpperCase()] * 28 ** i
+        sum += angelHash[w[i].toUpperCase()] * 34 ** i
     }
     return sum
 }
@@ -55,15 +55,13 @@ export default function WordInterpreter() {
                     convertir en ángeles
                 </Button>
             </form>
-            <p>
-                Result:
-                <output>
-                    {result &&
-                        result.map((line) => (
-                            <p key={line}>{line}</p>
-                        ))}
-                </output>
-            </p>
+            Result:
+            <output>
+                {result &&
+                    result.map((line) => (
+                        <p key={line}>{line}</p>
+                    ))}
+            </output>
         </>
     )
 }
