@@ -8,7 +8,7 @@ const angelHash = alfabeangel.reduce(
 )
 
 /**
- *  Interprets the word using a letter to number conversion ∅=0, A=1, B=2, ..., Z = 27
+ *  Interprets the word using a letter to number conversion ∅=0, A=1, Á=2 B=3,..., Ñ=18 ..., Z=33
  *  And then performs trivial numerical interpretation based on radix and base
  * @param {*} word to be converted into a decimal number
  * @returns
