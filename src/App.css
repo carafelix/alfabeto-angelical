@@ -17,3 +17,7 @@ th {
 td {
     text-align: center;
 }
+
+span.Mui-disabled:nth-child(2) {
+    all: unset;
+}

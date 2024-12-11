@@ -1,7 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { Switch, FormControlLabel } from '@mui/material'
-import { vigesiseptimal, alfabeangel } from './numeros'
+import {
+    vigesiseptimal,
+    alfabeangel,
+    alfabeangelNoDiacritics,
+} from './numeros'
 import WordInterpreter from './wordInterpreter'
 
 function getMatrix(n, op) {
@@ -19,11 +23,13 @@ function getMatrix(n, op) {
  * @param {boolean} angel remove numbers from the symbols?
  * @returns
  */
-export function changeBase(n, base, angel) {
+export function changeBase(n, base, angel, diacritics) {
     base = base < 2 ? 2 : base
     const hash = !angel
-        ? vigesiseptimal.slice(0, base)
-        : alfabeangel.slice(0, base)
+        ? vigesiseptimal
+        : diacritics
+        ? alfabeangel
+        : alfabeangelNoDiacritics
 
     const i_v = []
 
@@ -45,6 +51,17 @@ export default function App() {
     const [matrix, setMatrix] = useState(
         getMatrix(base, op)
     )
+    const [diacritics, setDiacritics] = useState(true)
+
+    useEffect(() => {
+        if (!diacritics && angel && base > 28) {
+            setBase(28)
+        }
+    }, [diacritics, angel, base])
+
+    useEffect(() => {
+        setMatrix(getMatrix(base, op, angel))
+    }, [base, op, angel])
 
     return (
         <>
@@ -63,6 +80,19 @@ export default function App() {
                 onChange={() => setAngel(!angel)}
             />
             <FormControlLabel
+                control={
+                    <Switch
+                        defaultChecked
+                        color='secondary'
+                        disabled={!angel}
+                    />
+                }
+                label='diacritics'
+                onChange={() => {
+                    setDiacritics(!diacritics)
+                }}
+            />
+            <FormControlLabel
                 control={<Switch defaultChecked />}
                 label={op}
                 onChange={() => {
@@ -70,12 +100,11 @@ export default function App() {
                     op === '×'
                         ? setOp(new_op)
                         : setOp(new_op)
-                    setMatrix(getMatrix(base, new_op))
                 }}
             />
             <br />
             <label htmlFor='tablas'>
-                Base del sistema (2-34):
+                Base del sistema:
             </label>
             <input
                 type='number'
@@ -86,9 +115,29 @@ export default function App() {
                 value={base}
                 onChange={(ev) => {
                     const v = +ev.target.value
-                    const lv = v > 34 ? 34 : v < 2 ? 2 : v
+                    let lv =
+                        diacritics | !angel
+                            ? v > 34
+                                ? 34
+                                : v < 2
+                                ? 2
+                                : v
+                            : v > 28
+                            ? 28
+                            : v < 2
+                            ? 2
+                            : v
+
+                    if (
+                        diacritics &&
+                        angel &&
+                        lv > 28 &&
+                        lv < 34
+                    ) {
+                        lv = lv > base ? 34 : 28
+                    }
+
                     setBase(lv)
-                    setMatrix(getMatrix(lv, op))
                 }}
             />
             <table>
@@ -110,7 +159,8 @@ export default function App() {
                                                 {changeBase(
                                                     cell,
                                                     base,
-                                                    angel
+                                                    angel,
+                                                    diacritics
                                                 )}
                                             </td>
                                         )

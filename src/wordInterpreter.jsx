@@ -1,9 +1,17 @@
-import { alfabeangel } from './numeros'
+import {
+    alfabeangel,
+    alfabeangelNoDiacritics,
+} from './numeros'
 import { Textarea, Button } from '@mui/joy'
+import { Switch, FormControlLabel } from '@mui/material'
 import { useState } from 'react'
 import { changeBase } from './App'
 
 const angelHash = alfabeangel.reduce(
+    (acc, v, i) => ({ ...acc, [v]: i }),
+    {}
+)
+const angelHashNoDiac = alfabeangelNoDiacritics.reduce(
     (acc, v, i) => ({ ...acc, [v]: i }),
     {}
 )
@@ -15,15 +23,17 @@ const angelHash = alfabeangel.reduce(
  * @returns
  */
 
-function wordToNumber(word) {
+function wordToNumber(word, diacritics) {
     const w = word.split('').reverse()
+    const hash = diacritics ? angelHash : angelHashNoDiac
+    const base = diacritics ? 34 : 28
 
     if (!w.length) return null
-    if (isNaN(angelHash[w[0].toUpperCase()])) return word
+    if (isNaN(hash[w[0].toUpperCase()])) return word
 
     let sum = 0
     for (let i = 0; i < w.length; i++) {
-        sum += angelHash[w[i].toUpperCase()] * 34 ** i
+        sum += hash[w[i].toUpperCase()] * base ** i
     }
     return sum
 }
@@ -31,10 +41,17 @@ function wordToNumber(word) {
 export default function WordInterpreter() {
     const [inputValue, setInputValue] = useState('')
     const [result, setResult] = useState(null)
+    const [diacritics, setDiacritics] = useState(true)
 
     const handleSubmit = (ev) => {
         ev.preventDefault()
-        const lines = inputValue.split('\n')
+
+        const lines = !diacritics
+            ? inputValue
+                  .normalize('NFD')
+                  .replace(/\p{Diacritic}/gu, '')
+                  .split('\n')
+            : inputValue.split('\n')
 
         const numbersFromWords = lines.map((line) =>
             line
@@ -43,7 +60,9 @@ export default function WordInterpreter() {
                     (match) => ` ` + match + ' '
                 )
                 .split(' ')
-                .map(wordToNumber)
+                .map((word) =>
+                    wordToNumber(word, diacritics)
+                )
                 .join(' ')
                 .replaceAll(/ [^0-9]/g, (match) =>
                     match.replace(' ', '')
@@ -62,7 +81,12 @@ export default function WordInterpreter() {
                 .map((number) => {
                     if (isNaN(+number) || +number === 0)
                         return number
-                    return changeBase(+number, 34, true)
+                    return changeBase(
+                        +number,
+                        diacritics ? 34 : 28,
+                        true,
+                        diacritics
+                    )
                 })
                 .join(' ')
                 .replaceAll(
@@ -81,6 +105,11 @@ export default function WordInterpreter() {
 
     return (
         <>
+            <FormControlLabel
+                control={<Switch defaultChecked />}
+                label='diacritics'
+                onChange={() => setDiacritics(!diacritics)}
+            />
             <form onSubmit={handleSubmit}>
                 <Textarea
                     placeholder='Type words papi'
@@ -97,8 +126,8 @@ export default function WordInterpreter() {
             Result:
             <output>
                 {result &&
-                    result.map((line) => (
-                        <p key={line}>{line}</p>
+                    result.map((line, i) => (
+                        <p key={[i, line]}>{line}</p>
                     ))}
             </output>
         </>
