@@ -57,6 +57,9 @@ export default function App() {
         if (!diacritics && angel && base > 28) {
             setBase(28)
         }
+        if (diacritics & angel) {
+            setBase(34)
+        }
     }, [diacritics, angel, base])
 
     useEffect(() => {
@@ -127,15 +130,6 @@ export default function App() {
                             : v < 2
                             ? 2
                             : v
-
-                    if (
-                        diacritics &&
-                        angel &&
-                        lv > 28 &&
-                        lv < 34
-                    ) {
-                        lv = lv > base ? 34 : 28
-                    }
 
                     setBase(lv)
                 }}
