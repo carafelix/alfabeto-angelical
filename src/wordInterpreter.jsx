@@ -1,6 +1,7 @@
 import { alfabeangel } from './numeros'
 import { Textarea, Button } from '@mui/joy'
 import { useState } from 'react'
+import { changeBase } from './App'
 
 const angelHash = alfabeangel.reduce(
     (acc, v, i) => ({ ...acc, [v]: i }),
@@ -35,7 +36,7 @@ export default function WordInterpreter() {
         ev.preventDefault()
         const lines = inputValue.split('\n')
 
-        const numericWords = lines.map((line) =>
+        const numbersFromWords = lines.map((line) =>
             line
                 .replaceAll(
                     /[^a-zA-ZáÁéÉíÍóÓúÚüÜñ]/g,
@@ -51,7 +52,31 @@ export default function WordInterpreter() {
                     match.replace(' ', '')
                 )
         )
-        setResult(numericWords)
+        const wordsFromNumbers = lines.map((line) =>
+            line
+                .replaceAll(
+                    /[^0-9]/g,
+                    (match) => ` ` + match + ' '
+                )
+                .split(' ')
+                .map((number) => {
+                    if (isNaN(+number) || +number === 0)
+                        return number
+                    return changeBase(+number, 34, true)
+                })
+                .join(' ')
+                .replaceAll(
+                    / [^a-zA-ZáÁéÉíÍóÓúÚüÜñ]/g,
+                    (match) => match.replace(' ', '')
+                )
+                .replaceAll(
+                    /[^a-zA-ZáÁéÉíÍóÓúÚüÜñ] /g,
+                    (match) => match.replace(' ', '')
+                )
+        )
+        if (isNaN(+inputValue[0])) {
+            setResult(numbersFromWords)
+        } else setResult(wordsFromNumbers)
     }
 
     return (

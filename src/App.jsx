@@ -19,7 +19,7 @@ function getMatrix(n, op) {
  * @param {boolean} angel remove numbers from the symbols?
  * @returns
  */
-function changeBase(n, base, angel) {
+export function changeBase(n, base, angel) {
     base = base < 2 ? 2 : base
     const hash = !angel
         ? vigesiseptimal.slice(0, base)
